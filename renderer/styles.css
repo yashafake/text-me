@@ -1,0 +1,325 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+  --accent-telegram: #0088cc;
+  --accent-whatsapp: #25d366;
+  --accent-whatsapp-business: #128c7e;
+  --accent-instagram: #e4405f;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --tab-height: 52px;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Tab Bar */
+.tab-bar {
+  display: flex;
+  align-items: center;
+  height: var(--tab-height);
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  -webkit-app-region: drag;
+  padding-left: 80px; /* Space for traffic lights */
+}
+
+.drag-region {
+  flex: 0 0 auto;
+  width: 80px;
+  height: 100%;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  -webkit-app-region: no-drag;
+  padding: 0 12px;
+  flex: 1 1 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  min-width: 140px;
+  max-width: 260px;
+}
+
+.tab:hover .tab-actions-inline {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tab.active .tab-actions-inline {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tab:hover .tab-reload {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tab.active .tab-reload {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.tab.active {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.tab[data-tab="telegram"].active {
+  box-shadow: 0 0 0 1px var(--accent-telegram), 0 2px 8px rgba(0, 136, 204, 0.3);
+}
+
+.tab[data-tab="whatsapp"].active {
+  box-shadow: 0 0 0 1px var(--accent-whatsapp), 0 2px 8px rgba(37, 211, 102, 0.3);
+}
+
+.tab[data-tab="whatsapp-business"].active {
+  box-shadow: 0 0 0 1px var(--accent-whatsapp-business), 0 2px 8px rgba(18, 140, 126, 0.3);
+}
+
+.tab[data-tab="instagram"].active {
+  box-shadow: 0 0 0 1px var(--accent-instagram), 0 2px 8px rgba(228, 64, 95, 0.3);
+}
+
+.tab-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.tab[data-tab="telegram"] .tab-icon {
+  color: var(--accent-telegram);
+}
+
+.tab[data-tab="whatsapp"] .tab-icon {
+  color: var(--accent-whatsapp);
+}
+
+.tab[data-tab="whatsapp-business"] .tab-icon {
+  color: var(--accent-whatsapp-business);
+}
+
+.tab[data-tab="instagram"] .tab-icon {
+  color: var(--accent-instagram);
+}
+
+.tab-label {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+.tab-label.editing {
+  display: none;
+}
+
+.tab-label-input {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 60px;
+  max-width: 120px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  padding: 4px 6px;
+  font-size: 13px;
+}
+
+.tab-label-input.active {
+  display: block;
+}
+
+.tab-actions-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.tab-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding-right: 12px;
+  -webkit-app-region: no-drag;
+}
+
+.tab-reload {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.tab-reload:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+}
+
+.tab-reload svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tab-delete {
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.tab-delete:hover {
+  background: rgba(255, 76, 76, 0.2);
+  color: #ff4c4c;
+}
+
+.tab-delete svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Badge */
+.badge {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: #e74c3c;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 9px;
+  margin-left: 4px;
+}
+
+.badge.visible {
+  display: flex;
+}
+
+/* WebView Container */
+.webview-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.webview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.webview.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Loading state */
+.webview.loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-telegram);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1a4d7a;
+}

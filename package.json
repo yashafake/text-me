@@ -1,0 +1,83 @@
+{
+  "name": "textme",
+  "version": "1.0.0",
+  "description": "Unified desktop messenger for Telegram, WhatsApp, Instagram and VK",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac",
+    "build:dmg": "electron-builder --mac dmg",
+    "build:win": "electron-builder --win portable nsis --x64",
+    "build:win:portable": "electron-builder --win portable --x64",
+    "test:e2e": "node scripts/e2e-external-link.js"
+  },
+  "author": "yashafake",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yashafake/text-me.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yashafake/text-me/issues"
+  },
+  "homepage": "https://github.com/yashafake/text-me#readme",
+  "keywords": [
+    "electron",
+    "messenger",
+    "telegram",
+    "whatsapp",
+    "instagram",
+    "vk"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.textme.app",
+    "productName": "TextMe",
+    "mac": {
+      "category": "public.app-category.social-networking",
+      "icon": "assets/icon.png",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "extraResources": [
+        {
+          "from": "resources/bin/darwin-arm64",
+          "to": "bin",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "extraResources": [
+        {
+          "from": "resources/bin/win32-x64",
+          "to": "bin",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "TextMe",
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  }
+}

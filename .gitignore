@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+out/
+build/
+release/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local agent/tooling configs (may contain private tokens)
+.kilocode/
+.agent/
+
+# Runtime temp/config
+*.tmp
+*.swp
+
