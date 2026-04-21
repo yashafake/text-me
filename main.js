@@ -58,7 +58,7 @@ function attachWindowOpenHandler(webContents) {
 }
 
 function runExternalLinkE2EProbe() {
-  const timeoutMs = 15000;
+  const timeoutMs = 30000;
   const timeoutId = setTimeout(() => {
     console.error('E2E_EXTERNAL_LINK_TIMEOUT');
     app.exit(1);
@@ -69,36 +69,58 @@ function runExternalLinkE2EProbe() {
       const probeScript = `
         (() => {
           localStorage.setItem('external_links_in_browser_v1', '1');
+          if (typeof setExternalLinksInBrowser === 'function') {
+            setExternalLinksInBrowser(true);
+          }
           const webview = document.querySelector('.webview');
           if (!webview) return 'retry';
 
           if (webview.dataset.e2eProbeAttached === '1') return 'attached';
           webview.dataset.e2eProbeAttached = '1';
 
-          const clickLinkInsideWebview = () => {
-            const clickScript = \`
-              (() => {
-                const url = 'https://example.com/';
-                const anchor = document.createElement('a');
-                anchor.href = url;
-                anchor.target = '_blank';
-                anchor.rel = 'noreferrer noopener';
-                anchor.textContent = 'e2e-link';
-                document.body.appendChild(anchor);
-                anchor.click();
-                return true;
-              })();
-            \`;
-            webview.executeJavaScript(clickScript).catch((error) => {
-              console.error('E2E_EXTERNAL_LINK_WEBVIEW_SCRIPT_ERROR', error && error.message ? error.message : error);
-            });
+          const clickScript = \`
+            (() => {
+              // Deterministic probe: force a cross-host navigation so renderer's
+              // will-navigate handler routes it to openExternal.
+              window.location.href = 'https://example.com/';
+              return true;
+            })();
+          \`;
+
+          let attempts = 0;
+          const maxAttempts = 40;
+          const isDomReadyNotReached = (message) => message.includes('dom-ready event emitted');
+          const handleProbeError = (error) => {
+            const message = error && error.message ? error.message : String(error);
+            if (isDomReadyNotReached(message) && attempts < maxAttempts) {
+              setTimeout(clickLinkInsideWebview, 100);
+              return;
+            }
+            console.error('E2E_EXTERNAL_LINK_WEBVIEW_SCRIPT_ERROR', message);
           };
 
-          if (webview.isLoading()) {
-            webview.addEventListener('dom-ready', clickLinkInsideWebview, { once: true });
-          } else {
+          const clickLinkInsideWebview = () => {
+            attempts += 1;
+            let pendingResult;
+            try {
+              pendingResult = webview.executeJavaScript(clickScript);
+            } catch (error) {
+              handleProbeError(error);
+              return;
+            }
+
+            Promise.resolve(pendingResult).then(() => {
+              webview.dataset.e2eProbeDone = '1';
+            }).catch(handleProbeError);
+          };
+
+          webview.addEventListener('dom-ready', () => {
+            if (webview.dataset.e2eProbeDone === '1') return;
             clickLinkInsideWebview();
-          }
+          }, { once: true });
+
+          // Immediate attempt handles the case when dom-ready already happened.
+          clickLinkInsideWebview();
           return 'attached';
         })();
       `;

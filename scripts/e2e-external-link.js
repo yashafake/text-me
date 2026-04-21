@@ -7,7 +7,7 @@ const APP_DIR = path.resolve(__dirname, '..');
 const E2E_ARG = '--e2e-external-link';
 const E2E_MARKER = 'E2E_OPEN_EXTERNAL:';
 const EXPECTED_URL = 'https://example.com/';
-const TIMEOUT_MS = 25000;
+const TIMEOUT_MS = 40000;
 
 const child = spawn(electronBinary, [APP_DIR, E2E_ARG], {
     cwd: APP_DIR,

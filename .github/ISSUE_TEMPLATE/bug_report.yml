@@ -1,0 +1,64 @@
+name: Bug report
+description: Report a reproducible problem.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please include clear reproduction steps.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is broken?
+      placeholder: A short and clear summary.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open app
+        2. ...
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: What happened instead?
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: macOS 14.5 / Windows 11
+
+  - type: input
+    id: app_version
+    attributes:
+      label: App / commit version
+      placeholder: v1.0.0 or commit hash
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      render: shell
+

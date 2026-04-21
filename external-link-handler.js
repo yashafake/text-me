@@ -1,6 +1,9 @@
 const { shell } = require('electron');
 
 const ALLOWED_EXTERNAL_PROTOCOLS = new Set(['http:', 'https:', 'mailto:']);
+const defaultOpenExternal = shell && typeof shell.openExternal === 'function'
+    ? shell.openExternal.bind(shell)
+    : () => {};
 
 function normalizeExternalUrl(rawUrl) {
     if (typeof rawUrl !== 'string') return null;
@@ -23,7 +26,7 @@ function normalizeExternalUrl(rawUrl) {
 
 function createExternalLinkOpener(options = {}) {
     const dedupeWindowMs = Number.isFinite(options.dedupeWindowMs) ? options.dedupeWindowMs : 500;
-    const openExternal = typeof options.openExternal === 'function' ? options.openExternal : shell.openExternal;
+    const openExternal = typeof options.openExternal === 'function' ? options.openExternal : defaultOpenExternal;
 
     let lastOpenedUrl = null;
     let lastOpenedAt = 0;

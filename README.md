@@ -1,5 +1,7 @@
 # TextMe
 
+[![CI](https://github.com/yashafake/text-me/actions/workflows/ci.yml/badge.svg)](https://github.com/yashafake/text-me/actions/workflows/ci.yml)
+
 TextMe is an Electron desktop app that combines popular web messengers in one window: Telegram, WhatsApp, Instagram, and VK.
 
 ## Features
@@ -39,6 +41,20 @@ npm run build:win
 
 Build output is generated in `dist/`.
 
+## Testing
+
+```bash
+# Unit tests
+npm test
+
+# E2E external-link smoke test
+npm run test:e2e
+```
+
+`CI` workflow runs unit tests on Node 18 and Node 20.
+
+`E2E Smoke` workflow is available as a manual GitHub Action run (`workflow_dispatch`) for macOS.
+
 ## Keyboard Shortcuts
 
 | Shortcut | Action |
@@ -53,6 +69,14 @@ Build output is generated in `dist/`.
 
 - This project loads official web clients; availability depends on those services.
 - This project is not affiliated with Telegram, WhatsApp, Instagram, or VK.
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+## Security
+
+See [SECURITY.md](./SECURITY.md).
 
 ## License
 

@@ -22,8 +22,9 @@ Thumbs.db
 # Local agent/tooling configs (may contain private tokens)
 .kilocode/
 .agent/
+.codex/
+.claude/
 
 # Runtime temp/config
 *.tmp
 *.swp
-
