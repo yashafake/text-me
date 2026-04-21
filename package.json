@@ -29,6 +29,11 @@
     "instagram",
     "vk"
   ],
+  "engines": {
+    "node": ">=18",
+    "npm": ">=9"
+  },
+  "packageManager": "npm@10",
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.0.0",

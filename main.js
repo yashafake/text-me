@@ -189,17 +189,21 @@ function createWindow() {
 }
 
 // Единственный экземпляр приложения
-const gotTheLock = app.requestSingleInstanceLock();
+// In E2E mode we intentionally allow parallel instance execution so local
+// tests still work when a packaged app is already running.
+const gotTheLock = isExternalLinkE2EMode ? true : app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
   app.quit();
 } else {
-  app.on('second-instance', () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      mainWindow.focus();
-    }
-  });
+  if (!isExternalLinkE2EMode) {
+    app.on('second-instance', () => {
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.focus();
+      }
+    });
+  }
 }
 
 app.whenReady().then(() => {
